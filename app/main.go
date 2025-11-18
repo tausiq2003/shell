@@ -39,6 +39,9 @@ func main() {
 		//handling commands here
 		cmd = strings.TrimSpace(cmd)
 
+		if cmd == "" {
+			continue
+		}
 		if strings.Split(cmd, " ")[0] == "exit" {
 			exitCode := strings.Split(cmd, " ")[1]
 			intexitCode, err := strconv.Atoi(exitCode)
@@ -53,12 +56,13 @@ func main() {
 			os.Exit(intexitCode)
 
 		}
-
-		if cmd != "" {
-
-			fmt.Printf("%v: command not found\n", strings.Split(cmd, " ")[0])
+		if strings.Split(cmd, " ")[0] == "echo" {
+			fmt.Println(cmd[5:])
+			continue
 
 		}
+		fmt.Printf("%v: command not found\n", strings.Split(cmd, " ")[0])
+
 	}
 
 }
