@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -19,11 +20,11 @@ func main() {
 
 		reader := bufio.NewScanner(os.Stdin)
 		reader.Split(bufio.ScanBytes)
-		var typedCmd string
+		var cmd string
 		for reader.Scan() {
 			tokens := reader.Text()
 			if tokens != "\n" {
-				typedCmd += tokens
+				cmd += tokens
 
 			}
 			if tokens == "\n" {
@@ -35,10 +36,28 @@ func main() {
 			// Your code here
 			panic(err)
 		}
+		//handling commands here
+		cmd = strings.TrimSpace(cmd)
 
-		if strings.TrimSpace(typedCmd) != "" {
+		if strings.Split(cmd, " ")[0] == "exit" {
+			exitCode := strings.Split(cmd, " ")[1]
+			intexitCode, err := strconv.Atoi(exitCode)
+			if err != nil {
+				// Your code here
+				panic(err)
+			}
+			if intexitCode < 0 || intexitCode > 125 {
+				fmt.Println("Invalid exit code")
+				os.Exit(1)
+			}
+			os.Exit(intexitCode)
 
-			fmt.Printf("%v: command not found\n", strings.Split(typedCmd, " ")[0])
+		}
+
+		if cmd != "" {
+
+			fmt.Printf("%v: command not found\n", strings.Split(cmd, " ")[0])
+
 		}
 	}
 
