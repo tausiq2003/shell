@@ -49,7 +49,7 @@ func typeCheck(cmd string) { // only the command
 						it will cancel all the bits r & w and return only non zero number
 						if its only 755 like here it would return 73 else 64, 8 or 1
 						*/
-						fmt.Printf("%v is %v\n", cmd, dir.Name())
+						fmt.Printf("%v is %v/%v\n", cmd, dir.Name(), cmd)
 						flag = 1
 						break
 
