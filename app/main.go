@@ -35,10 +35,7 @@ func typeCheck(cmd string) { // only the command
 		flag := 0
 		for _, path := range pathList {
 
-			dir, err := os.Open(path)
-			if err != nil {
-				log.Fatal("Error: ", err)
-			}
+			dir, _ := os.Open(path)
 			defer dir.Close()
 			files, err := dir.Readdir(-1)
 			if err != nil {
