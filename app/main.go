@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 )
 
 // Ensures gofmt doesn't remove the "fmt" and "os" imports in stage 1 (feel free to remove this!)
 
-func typeCheck(cmd string) string { // only the command
+func typeCheck(cmd string) (string, bool) { // only the command
 
 	//	commands := []string{"exit", "type", "echo"}
 	//ignore
@@ -26,7 +27,7 @@ func typeCheck(cmd string) string { // only the command
 	sbmap := map[string]struct{}{"echo": struct{}{}, "[": struct{}{}, "type": struct{}{}, "exit": struct{}{}}
 	_, exists := sbmap[cmd]
 	if exists {
-		return fmt.Sprintf("%v is a shell builtin\n", cmd)
+		return fmt.Sprintf("%v is a shell builtin\n", cmd), false
 	} else {
 
 		pathStr := os.Getenv("PATH")
@@ -48,7 +49,7 @@ func typeCheck(cmd string) string { // only the command
 						it will cancel all the bits r & w and return only non zero number
 						if its only 755 like here it would return 73 else 64, 8 or 1
 						*/
-						return fmt.Sprintf("%v is %v/%v\n", cmd, dir.Name(), cmd)
+						return fmt.Sprintf("%v is %v/%v\n", cmd, dir.Name(), cmd), true
 					}
 				}
 
@@ -56,7 +57,7 @@ func typeCheck(cmd string) string { // only the command
 		}
 
 	}
-	return fmt.Sprintf("%v not found\n", cmd)
+	return fmt.Sprintf("%v not found\n", cmd), false
 }
 
 func main() {
@@ -108,9 +109,25 @@ func main() {
 
 		}
 		if strings.Split(cmd, " ")[0] == "type" {
-			fmt.Print(typeCheck(strings.Split(cmd, " ")[1]))
+			data, _ := typeCheck(strings.Split(cmd, " ")[1])
+			fmt.Print(data)
 			continue
 
+		}
+		// step 8: might be changed later
+		cmdList := strings.Split(cmd, " ")
+		if len(cmdList) > 0 {
+
+			_, exists := typeCheck(cmdList[0])
+			if exists {
+				execute := exec.Command(cmdList[0], cmdList[1:]...)
+				execute.Stdout = os.Stdout
+				execute.Stderr = os.Stderr
+				if err := execute.Run(); err != nil {
+					log.Fatal(err)
+				}
+				continue
+			}
 		}
 
 		fmt.Printf("%v: command not found\n", strings.Split(cmd, " ")[0])
