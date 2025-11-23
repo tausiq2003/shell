@@ -90,11 +90,12 @@ func main() {
 		if cmd == "" {
 			continue
 		}
-		if strings.Split(cmd, " ")[0] == "exit" {
-			if len(strings.Split(cmd, " ")) == 1 {
+		cmdList := strings.Split(cmd, " ")
+		if cmdList[0] == "exit" {
+			if len(cmdList) == 1 {
 				os.Exit(0)
 			}
-			exitCode := strings.Split(cmd, " ")[1]
+			exitCode := cmdList[1]
 			intexitCode, err := strconv.Atoi(exitCode)
 			if err != nil {
 				log.Fatal("Error", err)
@@ -106,7 +107,7 @@ func main() {
 			os.Exit(intexitCode)
 
 		}
-		if strings.Split(cmd, " ")[0] == "echo" {
+		if cmdList[0] == "echo" {
 			if cmd == "echo" {
 				os.Exit(0)
 			}
@@ -114,14 +115,23 @@ func main() {
 			continue
 
 		}
-		if strings.Split(cmd, " ")[0] == "type" {
-			data, _ := typeCheck(strings.Split(cmd, " ")[1])
+		if cmdList[0] == "type" {
+			data, _ := typeCheck(cmdList[1])
 			fmt.Print(data)
 			continue
 
 		}
-		// step 8: might be changed later
-		cmdList := strings.Split(cmd, " ")
+		if cmdList[0] == "pwd" {
+			if len(cmdList) > 1 {
+				log.Fatal("pwd: too many arguments")
+			}
+			dir, err := os.Getwd()
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Println(dir)
+			continue
+		}
 		if len(cmdList) > 0 {
 
 			_, exists := typeCheck(cmdList[0])
