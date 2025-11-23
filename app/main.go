@@ -27,7 +27,7 @@ func typeCheck(cmd string) (string, bool) { // only the command
 	sbmap := map[string]struct{}{"echo": struct{}{}, "[": struct{}{}, "type": struct{}{}, "exit": struct{}{}, "pwd": struct{}{}}
 	_, exists := sbmap[cmd]
 	if exists {
-		return fmt.Sprintf("%v is a shell builtin\n", cmd), false
+		return fmt.Sprintf("%v is a shell builtin\n", cmd), true
 	} else {
 
 		pathStr := os.Getenv("PATH")
@@ -107,6 +107,9 @@ func main() {
 
 		}
 		if strings.Split(cmd, " ")[0] == "echo" {
+			if cmd == "echo" {
+				os.Exit(0)
+			}
 			fmt.Println(cmd[5:])
 			continue
 
