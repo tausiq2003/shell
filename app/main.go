@@ -139,7 +139,7 @@ func main() {
 			//				continue
 			//			}
 			if err := os.Chdir(cmdList[1]); err != nil {
-				fmt.Printf("cd: %v: No such file or directory", cmdList[1])
+				fmt.Printf("cd: %v: No such file or directory\n", cmdList[1])
 				// 	os.Exit(1) should i do it?
 			}
 			continue
