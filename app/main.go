@@ -24,7 +24,7 @@ func typeCheck(cmd string) (string, bool) { // only the command
 	//	}
 	// so first take the cmd, compute the path
 	//no first check if the shell-builtin in hash set, O(1)
-	sbmap := map[string]struct{}{"echo": struct{}{}, "[": struct{}{}, "type": struct{}{}, "exit": struct{}{}}
+	sbmap := map[string]struct{}{"echo": struct{}{}, "[": struct{}{}, "type": struct{}{}, "exit": struct{}{}, "pwd": struct{}{}}
 	_, exists := sbmap[cmd]
 	if exists {
 		return fmt.Sprintf("%v is a shell builtin\n", cmd), false
