@@ -132,6 +132,17 @@ func main() {
 			fmt.Println(dir)
 			continue
 		}
+		if cmdList[0] == "cd" {
+			// lets see it in future
+			//			if len(cmdList) == 1 {
+			//				os.Chdir("~")
+			//				continue
+			//			}
+			if err := os.Chdir(cmdList[1]); err != nil {
+				log.Fatalf("cd: %v: No such file or directory", cmdList[1])
+			}
+			continue
+		}
 		if len(cmdList) > 0 {
 
 			_, exists := typeCheck(cmdList[0])
