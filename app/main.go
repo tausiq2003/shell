@@ -92,7 +92,7 @@ func main() {
 		}
 		if strings.Split(cmd, " ")[0] == "exit" {
 			if len(strings.Split(cmd, " ")) == 1 {
-				os.Exit(1)
+				os.Exit(0)
 			}
 			exitCode := strings.Split(cmd, " ")[1]
 			intexitCode, err := strconv.Atoi(exitCode)
