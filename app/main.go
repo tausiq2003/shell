@@ -133,11 +133,13 @@ func main() {
 			continue
 		}
 		if cmdList[0] == "cd" {
-			// lets see it in future
-			//			if len(cmdList) == 1 {
-			//				os.Chdir("~")
-			//				continue
-			//			}
+			if len(cmdList) == 1 {
+				os.Chdir(os.Getenv("HOME"))
+				continue
+			}
+			if cmdList[1] == "~" {
+				cmdList[1] = os.Getenv("HOME")
+			}
 			if err := os.Chdir(cmdList[1]); err != nil {
 				fmt.Printf("cd: %v: No such file or directory\n", cmdList[1])
 				// 	os.Exit(1) should i do it?
