@@ -25,7 +25,7 @@ func Echo(cmdList []string) (string, error) {
 		//		}
 		if opened && v != '\'' {
 			if withoutQuotesContent != "" {
-				result += strings.TrimSpace(strings.Join(strings.Fields(withoutQuotesContent), " "))
+				result += strings.Join(strings.Fields(withoutQuotesContent), " ")
 				result += " "
 				withoutQuotesContent = ""
 			}
@@ -35,7 +35,6 @@ func Echo(cmdList []string) (string, error) {
 			if v == '\'' {
 				// then it is just closed
 				result += quotesContent
-				result += " "
 				quotesContent = ""
 				//				fmt.Printf("--->%v\n", result)
 				//				fmt.Println("baz")
