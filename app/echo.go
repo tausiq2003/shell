@@ -50,8 +50,8 @@ func Echo(cmdList []string) (string, error) {
 
 		}
 	}
-	fmt.Println(quotesContent)
-	fmt.Printf("%q\n", withoutQuotesContent)
+	//	fmt.Println(quotesContent)
+	//	fmt.Printf("%q\n", withoutQuotesContent)
 
 	withoutQuotesContent = strings.Join(strings.Fields(withoutQuotesContent), " ")
 	result += withoutQuotesContent
