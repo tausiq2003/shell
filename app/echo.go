@@ -14,47 +14,56 @@ func Echo(cmdList []string) (string, error) {
 	var result string
 	var quotesContent string
 	var withoutQuotesContent string
+	emitted := false
+
 	for _, v := range realContent {
 		if v == '\'' {
 			//fmt.Println("bar")
 			opened = !opened
-
 		}
 		//		if v == 39 {
 		//			doubleOpened = !doubleOpened
 		//		}
 		if opened && v != '\'' {
 			if withoutQuotesContent != "" {
+				if emitted {
+					result += " "
+				}
 				result += strings.Join(strings.Fields(withoutQuotesContent), " ")
-				result += " "
 				withoutQuotesContent = ""
+				emitted = true
 			}
 			quotesContent += string(rune(v))
 		} else if !opened {
-
 			if v == '\'' {
 				// then it is just closed
-				result += quotesContent
-				quotesContent = ""
-				//				fmt.Printf("--->%v\n", result)
-				//				fmt.Println("baz")
-
+				if quotesContent != "" {
+					if emitted {
+						result += " "
+					}
+					result += quotesContent
+					quotesContent = ""
+					emitted = true
+					//				fmt.Printf("--->%v\n", result)
+					//				fmt.Println("baz")
+				}
 			} else {
 				//treat it as normal thing
 				withoutQuotesContent += string(rune(v))
 				//				fmt.Println("foo")
 				// fmt.Println(withoutQuotesContent)
 			}
-
 		}
 	}
 	//	fmt.Println(quotesContent)
 	//	fmt.Printf("%q\n", withoutQuotesContent)
 
-	result += strings.TrimSpace(strings.Join(strings.Fields(withoutQuotesContent), " "))
-
-	result = strings.TrimRight(result, " ")
+	if withoutQuotesContent != "" {
+		if emitted {
+			result += " "
+		}
+		result += strings.Join(strings.Fields(withoutQuotesContent), " ")
+	}
 
 	return result, nil
-
 }
