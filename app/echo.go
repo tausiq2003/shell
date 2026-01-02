@@ -35,6 +35,7 @@ func Echo(cmdList []string) (string, error) {
 			if v == '\'' {
 				// then it is just closed
 				result += quotesContent
+				result += " "
 				quotesContent = ""
 				//				fmt.Printf("--->%v\n", result)
 				//				fmt.Println("baz")
