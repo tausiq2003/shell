@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"strings"
-	//"strings"
 )
 
 func Echo(cmdList []string) (string, error) {
@@ -11,7 +10,7 @@ func Echo(cmdList []string) (string, error) {
 	realContent := content[1 : len(content)-1]
 
 	opened := false
-	//doubleOpened := false
+	// doubleOpened := false
 	var result string
 	var quotesContent string
 	var withoutQuotesContent string
@@ -26,9 +25,8 @@ func Echo(cmdList []string) (string, error) {
 		//		}
 		if opened && v != '\'' {
 			if withoutQuotesContent != "" {
-
-				withoutQuotesContent = strings.Join(strings.Fields(withoutQuotesContent), " ")
-				result += withoutQuotesContent
+				result += strings.TrimSpace(strings.Join(strings.Fields(withoutQuotesContent), " "))
+				result += " "
 				withoutQuotesContent = ""
 			}
 			quotesContent += string(rune(v))
@@ -53,9 +51,10 @@ func Echo(cmdList []string) (string, error) {
 	//	fmt.Println(quotesContent)
 	//	fmt.Printf("%q\n", withoutQuotesContent)
 
-	withoutQuotesContent = strings.Join(strings.Fields(withoutQuotesContent), " ")
-	result += withoutQuotesContent
-	result = string(result)
+	result += strings.TrimSpace(strings.Join(strings.Fields(withoutQuotesContent), " "))
+
+	result = strings.TrimRight(result, " ")
+
 	return result, nil
 
 }

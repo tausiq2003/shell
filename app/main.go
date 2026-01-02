@@ -62,6 +62,7 @@ func main() {
 			if cmd == "echo" {
 				continue
 			}
+
 			data, err := Echo(cmdList)
 			if err != nil {
 				log.Fatal("Error", err)
