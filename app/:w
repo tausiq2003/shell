@@ -1,0 +1,49 @@
+package main
+
+import (
+	"fmt"
+	"strconv"
+	"strings"
+	//"strings"
+)
+
+func Echo(cmdList []string) (string, error) {
+	content := fmt.Sprint(cmdList[1:])
+	realContent := content[1 : len(content)-1]
+
+	opened := false
+	//doubleOpened := false
+	var result string
+	var quotesContent string
+	var withoutQuotesContent string
+	for i, v := range realContent {
+		if v == 34 {
+			opened = !opened
+
+		}
+		//		if v == 39 {
+		//			doubleOpened = !doubleOpened
+		//		}
+		if opened && v != 34 {
+			withoutQuotesContent = strings.Join(strings.Fields(withoutQuotesContent), " ")
+			result += withoutQuotesContent
+			quotesContent += strconv.QuoteRune(v)
+		} else if !opened {
+
+			if realContent[i] == 34 {
+				// then it is just closed
+				result += quotesContent
+
+			} else {
+				//treat it as normal thing
+				withoutQuotesContent += strconv.Atoi(v)
+				fmt.Println(withoutQuotesContent)
+			}
+
+		}
+	}
+	result += withoutQuotesContent
+	result = string(result)
+	return result, nil
+
+}
