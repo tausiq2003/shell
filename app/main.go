@@ -111,13 +111,19 @@ func main() {
 
 			_, exists := TypeCheck(cmdList[0])
 			if exists {
-				data, err := Echo(cmdList)
-				if err != nil {
-					log.Fatal(err)
-				}
-				dataList := strings.Fields(data)
+				//				data, err := Echo(cmdList)
+				//				if err != nil {
+				//					log.Fatal(err)
+				//				}
+				//				dataList := strings.Fields(data)
+				//				fmt.Println(cmdList[1:])
+				//				fmt.Println("----->")
+				//				fmt.Println(dataList)
 
-				execute := exec.Command(cmdList[0], dataList...)
+				args := normalizeArgs(cmdList[1:])
+				execute := exec.Command(cmdList[0], args...)
+				//				execute := exec.Command(cmdList[0], dataList...)
+
 				execute.Stdout = os.Stdout
 				execute.Stderr = os.Stderr
 				if err := execute.Run(); err != nil {
@@ -131,4 +137,30 @@ func main() {
 
 	}
 
+}
+func normalizeArgs(args []string) []string {
+	var out []string
+	var cur string
+	inQuote := false
+
+	for _, a := range args {
+		for _, ch := range a {
+			if ch == '\'' {
+				inQuote = !inQuote
+				continue
+			}
+			cur += string(ch)
+		}
+
+		if !inQuote {
+			out = append(out, cur)
+			cur = ""
+		} else {
+			cur += " "
+		}
+	}
+	if cur != "" {
+		out = append(out, cur)
+	}
+	return out
 }
