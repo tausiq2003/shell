@@ -115,7 +115,9 @@ func main() {
 				if err != nil {
 					log.Fatal(err)
 				}
-				execute := exec.Command(cmdList[0], data)
+				dataList := strings.Fields(data)
+
+				execute := exec.Command(cmdList[0], dataList...)
 				execute.Stdout = os.Stdout
 				execute.Stderr = os.Stderr
 				if err := execute.Run(); err != nil {
