@@ -112,7 +112,6 @@ func main() {
 			_, exists := TypeCheck(cmdList[0])
 			if exists {
 				data, err := Echo(cmdList)
-				fmt.Println(data)
 				if err != nil {
 					log.Fatal(err)
 				}
