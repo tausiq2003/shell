@@ -71,6 +71,11 @@ func main() {
 			continue
 
 		}
+		//		if cmdList[0] == "cat" {
+		//			if cmd == "cat" {
+		//				continue
+		//			}
+		//		}
 		if cmdList[0] == "type" {
 			data, _ := TypeCheck(cmdList[1])
 			fmt.Print(data)
@@ -106,7 +111,12 @@ func main() {
 
 			_, exists := TypeCheck(cmdList[0])
 			if exists {
-				execute := exec.Command(cmdList[0], cmdList[1:]...)
+				data, err := Echo(cmdList)
+				fmt.Println(data)
+				if err != nil {
+					log.Fatal(err)
+				}
+				execute := exec.Command(cmdList[0], data)
 				execute.Stdout = os.Stdout
 				execute.Stderr = os.Stderr
 				if err := execute.Run(); err != nil {
